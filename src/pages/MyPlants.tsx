@@ -16,16 +16,27 @@ import fonts from '../styles/fonts';
 
 import { PlantCardSecondary } from '../components/PlantCardSecondary';
 import { Load } from '../components/Load';
+import { Button } from '../components/Button';
+import { useNavigation } from '@react-navigation/core';
 
 export function MyPlants() {
+  const { navigate, goBack } = useNavigation();
+
   const [myPlants, setMyPlants] = useState<IPlant[]>([]);
   const [loading, setLoading] = useState(true);
   const [nextWaterd, setNextWaterd] = useState<string>();
+  const [noPlant, setNoPlant] = useState(false);
 
   useEffect(() => {
     async function loadStorageData() {
       const plantsStoraged = await loadPlant();
       setMyPlants(plantsStoraged);
+
+      if (plantsStoraged.length === 0) {
+        setLoading(false);
+        setNoPlant(true);
+        return;
+      }
 
       const nextTime = formatDistance(
         new Date(plantsStoraged[0].dateTimeNotification).getTime(),
@@ -59,8 +70,25 @@ export function MyPlants() {
     ]);
   }
 
+  function goToPlantSelect() {
+    goBack();
+  }
+
   if (loading) {
     return <Load />;
+  }
+
+  if (noPlant) {
+    return (
+      <View style={styles.container}>
+        <Header />
+        <View>
+          <Text style={styles.noPlantText}>Você não possui nenhuma plantinha. 😪</Text>
+          <Button title="Cadastrar plantinha" onPress={goToPlantSelect} />
+        </View>
+        <View />
+      </View>
+    );
   }
 
   return (
@@ -75,15 +103,17 @@ export function MyPlants() {
       <View style={styles.plants}>
         <Text style={styles.plantsTitle}>Próximas regadas</Text>
 
-        <FlatList
-          data={myPlants}
-          keyExtractor={(item: IPlant) => String(item.id)}
-          renderItem={({ item }) => (
-            <PlantCardSecondary handleRemove={() => handleRemove(item)} data={item} />
-          )}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ flex: 1 }}
-        />
+        {myPlants.length !== 0 && (
+          <FlatList
+            data={myPlants}
+            keyExtractor={(item: IPlant) => String(item.id)}
+            renderItem={({ item }) => (
+              <PlantCardSecondary handleRemove={() => handleRemove(item)} data={item} />
+            )}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ flex: 1 }}
+          />
+        )}
       </View>
     </View>
   );
@@ -125,5 +155,11 @@ const styles = StyleSheet.create({
     fontFamily: fonts.heading,
     color: colors.heading,
     marginVertical: 20,
+  },
+  noPlantText: {
+    fontSize: 16,
+    fontFamily: fonts.heading,
+    color: colors.heading,
+    marginBottom: 20,
   },
 });
