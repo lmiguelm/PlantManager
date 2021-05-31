@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Image, View, Text } from 'react-native';
+import { StyleSheet, Image, View, Text, Alert } from 'react-native';
 import { Header } from '../components/Header';
 
 import colors from '../styles/colors';
@@ -7,12 +7,15 @@ import colors from '../styles/colors';
 import waterdrop from '../assets/waterdrop.png';
 import { FlatList } from 'react-native-gesture-handler';
 
-import { IPlant, loadPlant } from '../libs/storage';
+import { IPlant, loadPlant, removePlant } from '../libs/storage';
 
 import { formatDistance } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+
 import fonts from '../styles/fonts';
+
 import { PlantCardSecondary } from '../components/PlantCardSecondary';
+import { Load } from '../components/Load';
 
 export function MyPlants() {
   const [myPlants, setMyPlants] = useState<IPlant[]>([]);
@@ -36,6 +39,30 @@ export function MyPlants() {
     loadStorageData();
   }, []);
 
+  function handleRemove(plant: IPlant) {
+    Alert.alert(`Remover`, `Deseja remover a ${plant.name}?`, [
+      {
+        text: 'Não 🙏',
+        style: 'cancel',
+      },
+      {
+        text: 'Sim 😣',
+        onPress: async () => {
+          try {
+            await removePlant(plant.id);
+            setMyPlants((oldvalue) => oldvalue.filter((item) => item.id !== plant.id));
+          } catch {
+            Alert.alert('Não foi possível remover! 😥');
+          }
+        },
+      },
+    ]);
+  }
+
+  if (loading) {
+    return <Load />;
+  }
+
   return (
     <View style={styles.container}>
       <Header />
@@ -51,7 +78,9 @@ export function MyPlants() {
         <FlatList
           data={myPlants}
           keyExtractor={(item: IPlant) => String(item.id)}
-          renderItem={({ item }) => <PlantCardSecondary data={item} />}
+          renderItem={({ item }) => (
+            <PlantCardSecondary handleRemove={() => handleRemove(item)} data={item} />
+          )}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ flex: 1 }}
         />

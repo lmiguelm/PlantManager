@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/core';
 import React, { useState } from 'react';
-import { StyleSheet, Alert, Text, View, Image, Platform } from 'react-native';
+import { StyleSheet, Alert, Text, View, Image, Platform, ScrollView } from 'react-native';
 import { SvgFromUri } from 'react-native-svg';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
@@ -68,7 +68,7 @@ export function PlantSave() {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.plantInfo}>
         <SvgFromUri height={150} width={150} uri={plant.photo} />
 
@@ -107,7 +107,7 @@ export function PlantSave() {
 
         <Button onPress={handleSave} title="Cadastrar planta" />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
