@@ -17,7 +17,7 @@ export function AuthRoutes() {
         labelPosition: 'beside-icon',
         style: {
           paddingVertical: Platform.OS === 'android' ? 0 : 20,
-          height: 88,
+          height: 70,
         },
       }}
     >

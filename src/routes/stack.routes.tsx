@@ -37,13 +37,14 @@ export const StackRoutes: React.FC = () => {
         <>
           <Screen name="Welcome" component={Welcome} />
           <Screen name="UserIdentification" component={UserIdentification} />
-          <Screen name="Confirmation" component={Confirmation} />
         </>
       )}
 
       <Screen name="PlantSelect" component={AuthRoutes} />
       <Screen name="PlantSave" component={PlantSave} />
       <Screen name="MyPlants" component={AuthRoutes} />
+
+      <Screen name="Confirmation" component={Confirmation} />
     </Navigator>
   );
 };

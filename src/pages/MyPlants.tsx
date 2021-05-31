@@ -103,17 +103,14 @@ export function MyPlants() {
       <View style={styles.plants}>
         <Text style={styles.plantsTitle}>Próximas regadas</Text>
 
-        {myPlants.length !== 0 && (
-          <FlatList
-            data={myPlants}
-            keyExtractor={(item: IPlant) => String(item.id)}
-            renderItem={({ item }) => (
-              <PlantCardSecondary handleRemove={() => handleRemove(item)} data={item} />
-            )}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ flex: 1 }}
-          />
-        )}
+        <FlatList
+          data={myPlants}
+          keyExtractor={(item: IPlant) => String(item.id)}
+          renderItem={({ item }) => (
+            <PlantCardSecondary handleRemove={() => handleRemove(item)} data={item} />
+          )}
+          showsVerticalScrollIndicator={false}
+        />
       </View>
     </View>
   );
@@ -154,7 +151,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: fonts.heading,
     color: colors.heading,
-    marginVertical: 20,
+    marginVertical: 15,
   },
   noPlantText: {
     fontSize: 16,
