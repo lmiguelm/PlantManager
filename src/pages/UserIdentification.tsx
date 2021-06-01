@@ -45,7 +45,10 @@ export function UserIdentification() {
     }
 
     try {
-      await AsyncStorage.setItem('@plantmanager:user', name);
+      await AsyncStorage.setItem(
+        '@plantmanager:user',
+        JSON.stringify({ name, image: 'default.png' })
+      );
 
       navigate('Confirmation', {
         title: 'Prontinho',
