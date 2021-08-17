@@ -8,6 +8,9 @@
   <img alt="Plant Manager" src=".github/plantmanager.svg" width="100%">
 </p>
 
+## 🌍 Experimente agora
+[PlantManager](https://expo.dev/@lmiguelm/PlantManager)
+
 ## ✨ Tecnologias
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:
